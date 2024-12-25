@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nutrition m</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background-color: lightgray;
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 0;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar button {
+      background: none;
+      border: none;
+      padding: 1rem;
+      text-align: left;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      color: black;
+    }
+
+    .sidebar button:hover {
+      background-color: darkgray;
+      color: white;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background-color: lightgreen;
+      padding: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .page {
+      display: none;
+      padding: 1rem;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .quick-actions button {
+      flex: 1 1 calc(50% - 1rem);
+      padding: 1rem;
+      background-color: lightgray;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      text-align: center;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .quick-actions button:hover {
+      background-color: darkgray;
+      color: white;
+    }
+
+    .summary {
+      margin: 2rem 0;
+    }
+
+    .summary div {
+      margin-bottom: 1rem;
+    }
+
+    .summary progress {
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+    }
+
+    .recent-searches {
+      margin-top: 2rem;
+    }
+
+    .recent-searches img {
+      width: 100%;
+      max-height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-top: 0.5rem;
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: white;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem 0;
+      position: sticky;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .bottom-nav button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .bottom-nav img {
+      height: 30px;
+      width: 30px;
+    }
+
+    /* Styles for the Dashboard */
+    .dashboard-content {
+      padding: 1rem;
+      background-color: #fff0f5;
+    }
+
+    .dashboard-content h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .progress-section {
+      margin-bottom: 2rem;
+    }
+
+    .progress-section div {
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar span {
+      font-weight: bold;
+    }
+
+    .progress-bar progress {
+      flex: 1;
+      margin-left: 1rem;
+    }
+
+    .pie-charts {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2rem;
+    }
+
+    .pie-charts div {
+      text-align: center;
+    }
+
+    .pie-charts svg {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <button onclick="showPage('home-page')">Home</button>
+    <button onclick="showPage('search-page')">Search</button>
+    <button onclick="showPage('update-page')">Update</button>
+    <button onclick="showPage('dashboard-page')">Nutritional info</button>
+    <button onclick="showPage('validation-page')">Validation</button>
+    <button onclick="showPage('f-page')">Favourite food</button>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Header Section -->
+    <header class="header" style="width: 100%;">Nutrition App</header>
+
+    <!-- Main Sections -->
+    <main>
+      <!-- Home Page -->
+      <section id="home-page" class="page active">
+        <h2>Home</h2>
+        <div class="quick-actions">
+          <button>DataBase</button>
+          <button>Search</button>
+          <button>Favorite</button>
+          <button>Reports</button>
+          <button>Validations</button>
+          <button>External Sources</button>
+        </div>
+        <div class="summary">
+          <h3>Today's Summary</h3>
+          <div>
+            <p>Calories</p>
+            <p style="color: green; font-weight: bold;">2000</p>
+            <progress value="2000" max="2500"></progress>
+          </div>
+          <div>
+            <p>Protein</p>
+            <p style="color: purple; font-weight: bold;">150g</p>
+            <progress value="150" max="200"></progress>
+          </div>
+          <div>
+            <p>Carbohydrates</p>
+            <p style="color: yellow; font-weight: bold;">250g</p>
+            <progress value="250" max="300"></progress>
+          </div>
+        </div>
+        <div class="recent-searches">
+          <h3>Recent Searches</h3>
+          <div>
+            <p>Chicken Breast</p>
+            <img src="chicken-breast.jpg" alt="Chicken Breast">
+          </div>
+        </div>
+      </section>
+
+      <!-- Search Page -->
+      <section id="search-page" class="page">
+        <header style="background-color: lightgreen; padding: 10px; display: flex; align-items: center;">
+          <button onclick="showPage('home-page')" style="background: none; border: none; font-size: 1.5rem;">←</button>
+          <h2 style="flex: 1; text-align: center; margin: 0;">Search for food</h2>
+        </header>
+        <div style="padding: 1rem;">
+          <!-- Search Bar -->
+          <div style="display: flex; margin-bottom: 1rem;">
+            <input type="text" placeholder="Search food" style="flex: 1; padding: 10px; border: 1px solid gray; border-radius: 5px;">
+            <button style="padding: 10px 15px; background-color: gray; color: white; border: none; margin-left: 5px;">Search</button>
+          </div>
+          <!-- Food Items -->
+          <div style="background-color: #fcefee; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+            <p style="margin: 0; font-weight: bold;">Chicken Breast</p>
+            <img src="chicken-breast.jpg" alt="Chicken Breast" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 5px; margin: 10px 0;">
+            <div style="display: flex; justify-content: space-between;">
+              <div>
+                <p>Calories</p>
+                <p>200g</p>
+              </div>
+              <div>
+                <p>Proteins</p>
+                <p>15g</p>
+              </div>
+              <div>
+                <p>Carbs</p>
+                <p>55g</p>
+              </div>
+              <div>
+                <p>Fats</p>
+                <p>1.9g</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Update Page -->
+      <section id="update-page" class="page">
+        <h2 style="color: lightgray;">Update DataBase</h2>
+        <div style="background-color: lightgreen; padding: 1rem; text-align: center; margin-bottom: 1rem;">
+          <button style="background: none; border: none; font-size: 1.5rem; font-weight: bold; cursor: pointer;">Update Database</button>
+        </div>
+        <div style="padding: 1rem;">
+          <label for="file-upload" style="display: block; font-weight: bold;">Upload CSV File</label>
+          <div style="margin: 0.5rem 0;">
+            <input type="file" id="file-upload" style="border: 1px solid #ccc; padding: 0.5rem; border-radius: 5px;">
+          </div>
+          <button style="background-color: gray; color: white; padding: 0.5rem 1rem; border: none; cursor: pointer;">Upload File</button>
+        </div>
+        <div style="border: 1px solid lightgray; border-radius: 5px; padding: 1rem; margin: 1rem 0;">
+          <h3>Database Status</h3>
+          <p>Total Records: 10,000</p>
+          <p>Last Updated: 2023-11-28 12:00:00</p>
+          <p>Database Size: 250 MB</p>
+        </div>
+        <div style="border: 1px solid lightgray; border-radius: 5px; padding: 1rem;">
+          <h3>Update History</h3>
+          <p>Major Update: 1000 records (2023-11-28 at 14:30)</p>
+          <p>Minor Update: 50 records (2023-11-27 at 09:15)</p>
+          <p>Data Correction: 25 records (2023-11-26 at 16:45)</p>
+        </div>
+      </section>
+
+      <!-- Dashboard Page -->
+      <section id="dashboard-page" class="page">
+        <div class="dashboard-content">
+          <h2>Nutritional Dashboard</h2>
+          <div class="progress-section">
+            <div>
+              <div class="progress-bar">
+                <span>Calories</span>
+                <progress value="2000" max="2500"></progress>
+              </div>
+              <p>Consumed: <span style="color: green; font-weight: bold;">2000</span> kcal</p>
+            </div>
+            <div>
+              <div class="progress-bar">
+                <span>Protein</span>
+                <progress value="150" max="200"></progress>
+              </div>
+              <p>Consumed: <span style="color: purple; font-weight: bold;">150g</span></p>
+            </div>
+            <div>
+              <div class="progress-bar">
+                <span>Carbohydrates</span>
+                <progress value="250" max="300"></progress>
+              </div>
+              <p>Consumed: <span style="color: yellow; font-weight: bold;">250g</span></p>
+            </div>
+            <div>
+              <div class="progress-bar">
+                <span>Fats</span>
+                <progress value="80" max="100"></progress>
+              </div>
+              <p>Consumed: <span style="color: blue; font-weight: bold;">80g</span></p>
+            </div>
+          </div>
+          <div class="pie-charts">
+            <div>
+              <svg><!-- Placeholder for pie chart --></svg>
+              <p>Calories</p>
+            </div>
+            <div>
+              <svg><!-- Placeholder for pie chart --></svg>
+              <p>Protein</p>
+            </div>
+            <div>
+              <svg><!-- Placeholder for pie chart --></svg>
+              <p>Fats</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Validation Page -->
+      <section id="validation-page" class="page">
+        <h2>Data Validation</h2>
+        <div class="validation-section">Data Validation</div>
+        <div class="progress-bar"></div>
+        <button style="background-color: black; color: white; width: 100%; padding: 0.5rem; font-size: 1rem;">Run Validation</button>
+
+        <div class="validation-card complete">
+          <img src="C:\Users\HP\Desktop\download.png" alt="Check">
+          <p>Calorie Values</p>
+          <span>All calorie values are within expected ranges</span>
+        </div>
+
+        <div class="validation-card warning">
+          <img src="C:\Users\HP\Desktop\download (1).png" alt="Warning">
+          <p>Nutrient Ratios</p>
+          <span>Some nutrient ratios are outside normal ranges</span>
+        </div>
+
+        <div class="validation-card">
+          <img src="C:\Users\HP\Desktop\download (2).png" alt="Error">
+          <p>Data Completeness</p>
+          <span>Missing required nutrient information in some entries</span>
+        </div>
+    </main>
+
+    <!-- <section id="favorite-page" class="page">
+      <h2>Favorite Food</h2>
+      <div class="table-container">
+        <table class="favorite-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Calories</th>
+              <th>Protein</th>
+              <th>Carbs</th>
+              <th>Date Added</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><img src="delete-icon.png" alt="Delete"> Brown Rice</td>
+              <td>165</td>
+              <td>31g</td>
+              <td>0g</td>
+              <td>2023-11-28</td>
+            </tr>
+            <tr>
+              <td><img src="delete-icon.png" alt="Delete"> Quinoa Bowl</td>
+              <td>220</td>
+              <td>8g</td>
+              <td>39g</td>
+              <td>2023-11-27</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section> -->
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button onclick="showPage('home-page')">
+        <img src="c:\Users\HP\Desktop\download (3).png" alt="Home">
+      </button>
+      <!-- <button onclick="showPage('search-page')">
+        <img src="search-icon.png" alt="Search">
+      </button> -->
+      <button onclick="showPage('dashboard-page')">
+        <img src="C:\Users\HP\Desktop\images.jpg" alt="Dashboard">
+      </button>
+      <button>
+        <img src="C:\Users\HP\Desktop\download (4).png" alt="My Activity">
+      </button>
+      <button  onclick="showPage('f-page')">
+        <img src="C:\Users\HP\Desktop\900772.png" alt="My Activity">
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    // JavaScript for navigation
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+
+      const selectedPage = document.getElementById(pageId);
+      selectedPage.classList.add('active');
+    }
+  </script>
+
+  <!-- Favorite Page -->
+  <section id="f-page" class="page" style="margin-left:-60%; margin-top: 0px;">
+    <h2 style="text-align: left; margin: 20px 0;">Favorite Food</h2>
+    <div class="table-container" style="overflow-x: auto; padding: 1rem;">
+      <table class="favorite-table" style="width: auto; border-collapse: collapse; text-align: left; table-layout: fixed;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th style="padding: 15px; border-bottom: 2px solid #ddd; width: 20%;">Name</th>
+            <th style="padding: 15px; border-bottom: 2px solid #ddd; width: 15%;">Calories</th>
+            <th style="padding: 15px; border-bottom: 2px solid #ddd;width: 15%;">Protein</th>
+            <th style="padding: 15px; border-bottom: 2px solid #ddd; width: 15%;">Carbs</th>
+            <th style="padding: 15px; border-bottom: 2px solid #ddd; width: 15%;">Date Added</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 15px; display: flex; align-items: center;">
+              <img src="delete-icon.png" alt="Delete" style="width: 20px; height: 20px; cursor: pointer; margin-right: 10px;">
+              Brown Rice
+            </td>
+            <td style="padding: 15px;">165</td>
+            <td style="padding: 15px;">31g</td>
+            <td style="padding: 15px;">0g</td>
+            <td style="padding: 15px;">2023-11-28</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 15px; display: flex; align-items: center;">
+              <img src="delete-icon.png" alt="Delete" style="width: 20px; height: 20px; cursor: pointer; margin-right: 10px;">
+              Quinoa Bowl
+            </td>
+            <td style="padding: 15px;">220</td>
+            <td style="padding: 15px;">8g</td>
+            <td style="padding: 15px;">39g</td>
+            <td style="padding: 15px;">2023-11-27</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+  <!-- <main>
+    <section>
+      <table>
+        <tr>
+          <td>name</td>
+          <td>name</td>
+          <td>name</td>
+          <td>name</td>
+        </tr>
+      </table>
+    </section>
+  </main> -->
+
+  
+  
+
+</body>
+</html>
